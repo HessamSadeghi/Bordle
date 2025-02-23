@@ -1,13 +1,8 @@
-import { useMemo, type FC } from "react";
-import { useLanguageStore, useGameStore } from "~/hooks";
+import { type FC } from "react";
+import { useGameStore } from "~/hooks";
 
 const Grid: FC = () => {
-  const { language } = useLanguageStore();
-  const { grid, current, theEnglishWord, thePersianhWord } = useGameStore();
-
-  const theWord = useMemo(() => {
-    return language === "en" ? theEnglishWord : thePersianhWord;
-  }, [language, theEnglishWord, thePersianhWord]);
+  const { grid, currentCell } = useGameStore();
 
   return (
     <div className="grid grid-cols-5 gap-2 p-1">
@@ -22,7 +17,7 @@ const Grid: FC = () => {
               return "border-green-200 bg-green-100";
             } else if (cell.color === 4) {
               return "border-gray-400 bg-white";
-            } else if (rowIndex === current.row) {
+            } else if (rowIndex === currentCell.row) {
               return "border-sky-200 bg-sky-100";
             } else if (cell.color === 0) {
               return "border-gray-200 bg-gray-100";
@@ -39,7 +34,6 @@ const Grid: FC = () => {
           );
         })
       )}
-      {theWord}
     </div>
   );
 };

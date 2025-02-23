@@ -1,6 +1,3 @@
-import { useMemo, type FC } from "react";
-import { useLanguageStore, useGameStore } from "~/hooks";
-import { ENGLISH_LETTERS, PERSIAN_LETTERS } from "~/data";
 import {
   DeleteButton,
   LanguageSwitchButton,
@@ -8,14 +5,14 @@ import {
   ResetButton,
   SubmitButton,
 } from "~/components";
+import { type FC } from "react";
+import { useLanguageStore, useGameStore } from "~/hooks";
 
 const InputButtons: FC = () => {
-  const { gameOver } = useGameStore();
   const { language } = useLanguageStore();
+  const { gameOver, letters } = useGameStore();
 
-  const letters = useMemo(() => {
-    return language === "en" ? ENGLISH_LETTERS : PERSIAN_LETTERS;
-  }, [language]);
+  if (!letters) return null;
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -25,8 +22,12 @@ const InputButtons: FC = () => {
           language === "en" ? "grid-cols-9" : "grid-cols-11"
         }`}
       >
-        {letters.map((input) => (
-          <LetterButton key={input} input={input} />
+        {letters?.map((letter) => (
+          <LetterButton
+            key={letter.value}
+            value={letter.value}
+            color={letter.color}
+          />
         ))}
         <LanguageSwitchButton />
       </div>

@@ -1,8 +1,9 @@
 import { type FC } from "react";
 import { useLanguageStore, useGameStore } from "~/hooks";
+import { ENGLISH_LETTERS, PERSIAN_LETTERS } from "~/data";
 
 const LanguageSwitchButton: FC = () => {
-  const { resetGame } = useGameStore();
+  const { resetGame, setLetters } = useGameStore();
   const { language, setLanguage } = useLanguageStore();
 
   return (
@@ -15,6 +16,7 @@ const LanguageSwitchButton: FC = () => {
           }`}
         onClick={() => {
           setLanguage(language === "en" ? "fa" : "en");
+          setLetters(language === "en" ? PERSIAN_LETTERS : ENGLISH_LETTERS);
           resetGame();
         }}
       >

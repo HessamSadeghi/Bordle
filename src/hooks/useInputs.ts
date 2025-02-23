@@ -1,7 +1,7 @@
+import { NotificationType } from "~/models";
 import { useCallback, useEffect, useMemo } from "react";
 import { ENGLISH_MAPPING, PERSIAN_MAPPING } from "~/data";
 import { useLanguageStore, useGameStore, useTranslation } from "~/hooks";
-import { NotificationType } from "~/models";
 
 interface useInputsOutputs {
   gameOver: boolean;
@@ -12,19 +12,20 @@ interface useInputsOutputs {
 
 const useInputs = (): useInputsOutputs => {
   const {
-    current,
-    gameOver,
     grid,
-    setCellValue,
-    setCurrent,
+    gameOver,
+    currentCell,
     setGameOver,
-    setNotification,
+    setCellValue,
+    setCurrentCell,
+    setLetterColor,
     theEnglishWord,
+    setNotification,
     thePersianhWord,
   } = useGameStore();
 
-  const currentRow = current.row;
-  const currentCol = current.col;
+  const currentRow = currentCell.row;
+  const currentCol = currentCell.col;
 
   const t = useTranslation();
   const { language } = useLanguageStore();
@@ -38,11 +39,14 @@ const useInputs = (): useInputsOutputs => {
     grid[currentRow].forEach((element, index) => {
       if (element.value === theWord[index]) {
         setCellValue(currentRow, index, element.value, 3);
+        setLetterColor(element.value, 3);
         currentScore++;
       } else if (theWord.includes(element.value)) {
         setCellValue(currentRow, index, element.value, 2);
+        setLetterColor(element.value, 2);
       } else {
         setCellValue(currentRow, index, element.value, 1);
+        setLetterColor(element.value, 1);
       }
     });
 
@@ -52,7 +56,16 @@ const useInputs = (): useInputsOutputs => {
       return true;
     }
     return false;
-  }, [grid, currentRow, theWord, setCellValue, setGameOver, setNotification]);
+  }, [
+    t,
+    grid,
+    theWord,
+    currentRow,
+    setGameOver,
+    setCellValue,
+    setLetterColor,
+    setNotification,
+  ]);
 
   const handleSubmit = useCallback(() => {
     setNotification("error" as NotificationType, "");
@@ -83,14 +96,15 @@ const useInputs = (): useInputsOutputs => {
       setGameOver(true);
       setNotification("error" as NotificationType, t("message_loose"));
     } else {
-      setCurrent(currentRow + 1, 0);
+      setCurrentCell(currentRow + 1, 0);
     }
   }, [
-    currentCol,
+    t,
     currentRow,
-    processGuess,
-    setCurrent,
+    currentCol,
     setGameOver,
+    processGuess,
+    setCurrentCell,
     setNotification,
   ]);
 
@@ -101,8 +115,15 @@ const useInputs = (): useInputsOutputs => {
       return;
     }
     setCellValue(currentRow, currentCol - 1, "", 0);
-    setCurrent(currentRow, currentCol - 1);
-  }, [currentCol, currentRow, setCellValue, setCurrent, setNotification]);
+    setCurrentCell(currentRow, currentCol - 1);
+  }, [
+    t,
+    currentCol,
+    currentRow,
+    setCellValue,
+    setCurrentCell,
+    setNotification,
+  ]);
 
   const handleClick = useCallback(
     (input: string) => {
@@ -113,9 +134,9 @@ const useInputs = (): useInputsOutputs => {
         return;
       }
       setCellValue(currentRow, currentCol, input, 4);
-      setCurrent(currentRow, currentCol + 1);
+      setCurrentCell(currentRow, currentCol + 1);
     },
-    [currentCol, currentRow, setCellValue, setCurrent, setNotification]
+    [currentCol, currentRow, setCellValue, setCurrentCell, setNotification, t]
   );
 
   const handleKeyPress = useCallback(
@@ -140,7 +161,7 @@ const useInputs = (): useInputsOutputs => {
         handleDelete();
       }
     },
-    [gameOver, handleClick, handleSubmit, handleDelete]
+    [gameOver, handleClick, handleSubmit, handleDelete, language]
   );
 
   useEffect(() => {

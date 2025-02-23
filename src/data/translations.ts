@@ -1,4 +1,4 @@
-export const translations: Record<string, Record<string, any>> = {
+export const translations: Record<string, Record<string, string>> = {
   en: {
     bordle: "Bordle!",
     bilingual_wordle: "Bilingual Wordle",

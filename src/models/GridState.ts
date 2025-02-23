@@ -3,11 +3,7 @@ import { NotificationType } from "./NotificationType";
 
 export interface GridState {
   // State
-  gameOver: boolean;
-  grid: Cell[][];
-  theEnglishWord: string;
-  thePersianhWord: string;
-  current: {
+  currentCell: {
     row: number;
     col: number;
   };
@@ -15,15 +11,22 @@ export interface GridState {
     type: NotificationType;
     message: string;
   };
+  grid: Cell[][];
+  letters: Cell[];
+  gameOver: boolean;
+  theEnglishWord: string;
+  thePersianhWord: string;
   // Functions
-  resetGame: () => void;
   setCellValue: (
     row: number,
     col: number,
     value: string,
     color: number
   ) => void;
-  setCurrent: (row: number, col: number) => void;
+  resetGame: () => void;
+  setLetters: (values: string[]) => void;
   setGameOver: (gameOver: boolean) => void;
+  setCurrentCell: (row: number, col: number) => void;
+  setLetterColor: (value: string, color: number) => void;
   setNotification: (type: NotificationType, message: string) => void;
 }
