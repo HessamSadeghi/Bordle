@@ -159,7 +159,7 @@ export const PERSIAN_MAPPING: Record<string, string> = {
   k: "ن",
   l: "م",
   ";": "ک",
-  ":": "گ",
+  "'": "گ",
   z: "ظ",
   x: "ط",
   c: "ز",
@@ -169,5 +169,5 @@ export const PERSIAN_MAPPING: Record<string, string> = {
   m: "ئ",
   ",": "و",
   "\\": "پ",
-  C: "ژ",
+  ".": "ژ",
 };

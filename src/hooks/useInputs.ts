@@ -4,6 +4,7 @@ import { ENGLISH_MAPPING, PERSIAN_MAPPING } from "~/data";
 import { useLanguageStore, useGameStore, useTranslation } from "~/hooks";
 
 interface useInputsOutputs {
+  theWord: string;
   gameOver: boolean;
   handleClick: (input: string) => void;
   handleDelete: () => void;
@@ -147,19 +148,31 @@ const useInputs = (): useInputsOutputs => {
 
       if (/^[a-zA-Z\u0600-\u06FF]$/.test(key)) {
         let inputString = "";
-        if (language === "en" && /^[\u0600-\u06FF]$/.test(key)) {
+        if (language === "en" && !/^[a-zA-Z]$/.test(key)) {
           inputString = ENGLISH_MAPPING[key.toLowerCase()].toUpperCase();
-        } else if (language === "fa" && /^[a-zA-Z]$/.test(key)) {
+        } else if (language === "fa" && !/^[\u0600-\u06FF]$/.test(key)) {
           inputString = PERSIAN_MAPPING[key.toLowerCase()];
         } else {
           inputString = key.toUpperCase();
         }
+        console.log(inputString);
         handleClick(inputString);
       } else if (key === "Enter") {
+        event.preventDefault();
         handleSubmit();
       } else if (key === "Backspace" || key === "Delete") {
         handleDelete();
-      }
+      } else if (
+        language === "fa" &&
+        (key === "[" ||
+          key === "]" ||
+          key === ";" ||
+          key === "'" ||
+          key === "," ||
+          key === "\\" ||
+          key === ".")
+      )
+        handleClick(PERSIAN_MAPPING[key]);
     },
     [gameOver, handleClick, handleSubmit, handleDelete, language]
   );
@@ -173,6 +186,7 @@ const useInputs = (): useInputsOutputs => {
   }, [handleKeyPress]);
 
   return {
+    theWord,
     gameOver,
     handleClick,
     handleDelete,

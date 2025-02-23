@@ -1,7 +1,8 @@
-export const translations: Record<string, Record<string, string>> = {
+export const TRANSLATIONS: Record<string, Record<string, string>> = {
   en: {
     bordle: "Bordle!",
     bilingual_wordle: "Bilingual Wordle",
+    chosen_word: "Chosen word:",
     delete: "Delete",
     language: "English",
     message_delete: "There is nothing to delete!",
@@ -16,6 +17,7 @@ export const translations: Record<string, Record<string, string>> = {
   fa: {
     bordle: "بردل!",
     bilingual_wordle: "وردل دو زبانه",
+    chosen_word: "کلمه انتخاب‌شده:",
     delete: "حذف",
     language: "فارسی",
     message_delete: "هیچ حرفی برای حذف وجود ندارد!",
@@ -24,7 +26,7 @@ export const translations: Record<string, Record<string, string>> = {
     message_not_guessed_all: "شما هنوز همه حروف را حدس نزده‌اید!",
     message_not_guessed_any: "شما هنوز هیچ حرفی را حدس نزده‌اید!",
     message_win: "شما برنده شدید!",
-    reset: "بازنشانی",
+    reset: "شروع مجدد",
     submit: "ارسال",
   },
 };

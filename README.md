@@ -18,14 +18,15 @@ Welcome to **Bordle!** (Bilingual Wordle) game! This is a web-based game where y
 
 ## 📖 About the Project
 
-**Bordle!** is a fun and challenging game where players attempt to guess a secret sequence of letters. The game provides feedback after each guess to help players deduce the correct sequence. It's inspired by classic code-breaking games like Wordle but with a numerical twist.
+**Bordle!** is a fun and challenging game where players attempt to guess a secret sequence of letters. The game provides feedback after each guess to help players deduce the correct sequence. It's inspired by classic code-breaking games like Wordle but in bilingual form.
 
 ## ✨ Features
 
 - **Interactive Gameplay**: Guess letters using on-screen buttons or your keyboard.
+- **Bilingual Support**: Play in English or Persian.
 - **Dynamic Feedback**: Receive color-coded hints after each guess.
 - **Responsive Design**: Enjoy a seamless experience on both desktop and mobile devices.
-- **Keyboard Support**: Use keyboard letters, Enter, and Backspace for faster gameplay.
+- **Keyboard Support**: Use keyboard letters, Enter, Delete or Backspace for faster gameplay.
 - **State Management**: Efficient state handling using Zustand for smooth performance.
 - **Modern Styling**: Styled with Tailwind CSS for a sleek and modern look.
 

@@ -11,9 +11,9 @@ const DeleteButton: FC = () => {
       disabled={gameOver}
       onClick={() => handleDelete()}
       className={`flex flex-col justify-center items-center text-center border-2
-      border-red-600 rounded text-2xl text-white font-bold p-2 bg-red-600 
+      border-red-600 rounded md:text-2xl text-white font-bold p-2 bg-red-600 
       hover:bg-white hover:text-red-600 hover:border-red-600 ${
-        language === "fa" ? "" : "pt-1"
+        language === "fa" ? "" : "md:pt-1"
       }`}
     >
       {t("delete")}
