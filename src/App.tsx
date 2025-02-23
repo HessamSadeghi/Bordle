@@ -8,8 +8,8 @@ const App: FC = () => {
   return (
     <div
       dir={language === "fa" ? "rtl" : "ltr"}
-      className="flex flex-col items-center h-screen w-full border-2 border-gray-200 rounded
-      justify-start md:justify-center"
+      className={`flex flex-col items-center h-screen w-full border-2 border-gray-200 rounded
+      justify-start md:justify-center ${language === "fa" ? "font-vazir" : ""}`}
     >
       <Header />
       <Grid />

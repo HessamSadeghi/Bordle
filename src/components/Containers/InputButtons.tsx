@@ -28,9 +28,9 @@ const InputButtons: FC = () => {
         {letters.map((input) => (
           <LetterButton key={input} input={input} />
         ))}
+        <LanguageSwitchButton />
       </div>
       <div className="flex flex-row justify-center gap-4 mb-2 mt-4">
-        <LanguageSwitchButton />
         {gameOver ? (
           <ResetButton />
         ) : (
