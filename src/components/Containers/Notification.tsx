@@ -1,10 +1,16 @@
+import {
+  useInputs,
+  useGameStore,
+  useTranslation,
+  useNotificationStore,
+} from "~/hooks";
 import type { FC } from "react";
-import { useGameStore, useInputs, useTranslation } from "~/hooks";
 
 const Notification: FC = () => {
   const t = useTranslation();
   const { theWord } = useInputs();
-  const { notification, gameOver } = useGameStore();
+  const { gameOver } = useGameStore();
+  const { notification } = useNotificationStore();
 
   return (
     <p

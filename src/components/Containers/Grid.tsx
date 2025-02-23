@@ -26,8 +26,8 @@ const Grid: FC = () => {
           return (
             <div
               key={`${rowIndex}-${colIndex}`}
-              className={`flex flex-col justify-center w-16 h-16 text-center border-2
-							rounded text-2xl font-bold ${cellStyle()}`}
+              className={`flex flex-col justify-center w-16 h-16 text-center
+              border-2 rounded text-2xl font-bold ${cellStyle()}`}
             >
               {cell.value.length > 0 && cell.value}
             </div>

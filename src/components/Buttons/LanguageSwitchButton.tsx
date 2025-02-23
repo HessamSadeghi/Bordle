@@ -1,9 +1,10 @@
 import { type FC } from "react";
-import { useLanguageStore, useGameStore } from "~/hooks";
 import { ENGLISH_LETTERS, PERSIAN_LETTERS } from "~/data";
+import { useLanguageStore, useGameStore, useKeyboardStore } from "~/hooks";
 
 const LanguageSwitchButton: FC = () => {
-  const { resetGame, setLetters } = useGameStore();
+  const { resetGame } = useGameStore();
+  const { setLetters } = useKeyboardStore();
   const { language, setLanguage } = useLanguageStore();
 
   return (

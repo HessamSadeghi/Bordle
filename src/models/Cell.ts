@@ -1,4 +1,4 @@
-import { CellColor } from "./CellColor";
+import { CellColor } from "~/models";
 
 export interface Cell {
 	value: string;

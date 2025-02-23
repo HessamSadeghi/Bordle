@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import { useInputs } from "~/hooks";
 import { Cell } from "~/models";
+import { useInputs } from "~/hooks";
 
 const LetterButton: FC<Cell> = ({ value, color }) => {
   const { gameOver, handleClick } = useInputs();
@@ -19,8 +19,8 @@ const LetterButton: FC<Cell> = ({ value, color }) => {
     <button
       disabled={gameOver}
       onClick={() => handleClick(value)}
-      className={`flex flex-col justify-center items-center w-8 h-8 md:w-16 md:h-16 text-center border-2
-      border-gray-200 rounded md:text-2xl font-bold bg-gray-100 hover:bg-gray-300 
+      className={`flex flex-col justify-center items-center w-8 h-8 md:w-16 md:h-16 text-center
+      border-2 border-gray-200 rounded md:text-2xl font-bold bg-gray-100 hover:bg-gray-300 
       hover:border-gray-300 ${cellStyle()}`}
     >
       {value}

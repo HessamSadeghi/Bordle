@@ -6,11 +6,12 @@ import {
   LanguageSwitchButton,
 } from "~/components";
 import { type FC } from "react";
-import { useLanguageStore, useGameStore } from "~/hooks";
+import { useLanguageStore, useGameStore, useKeyboardStore } from "~/hooks";
 
 const InputButtons: FC = () => {
+  const { gameOver } = useGameStore();
+  const { letters } = useKeyboardStore();
   const { language } = useLanguageStore();
-  const { gameOver, letters } = useGameStore();
 
   if (!letters) return null;
 

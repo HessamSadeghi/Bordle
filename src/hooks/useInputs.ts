@@ -1,27 +1,38 @@
+import {
+  ENGLISH_LETTERS,
+  ENGLISH_MAPPING,
+  PERSIAN_LETTERS,
+  PERSIAN_MAPPING,
+} from "~/data";
+import {
+  useGameStore,
+  useTranslation,
+  useKeyboardStore,
+  useLanguageStore,
+  useNotificationStore,
+} from "~/hooks";
 import { NotificationType } from "~/models";
 import { useCallback, useEffect, useMemo } from "react";
-import { ENGLISH_MAPPING, PERSIAN_MAPPING } from "~/data";
-import { useLanguageStore, useGameStore, useTranslation } from "~/hooks";
 
 interface useInputsOutputs {
   theWord: string;
   gameOver: boolean;
-  handleClick: (input: string) => void;
+  handleReset: () => void;
   handleDelete: () => void;
   handleSubmit: () => void;
+  handleClick: (input: string) => void;
 }
 
 const useInputs = (): useInputsOutputs => {
   const {
     grid,
     gameOver,
+    resetGame,
     currentCell,
     setGameOver,
     setCellValue,
     setCurrentCell,
-    setLetterColor,
     theEnglishWord,
-    setNotification,
     thePersianhWord,
   } = useGameStore();
 
@@ -30,25 +41,25 @@ const useInputs = (): useInputsOutputs => {
 
   const t = useTranslation();
   const { language } = useLanguageStore();
+  const { setNotification } = useNotificationStore();
+  const { setLetters, setLetterColor } = useKeyboardStore();
 
   const theWord = useMemo(() => {
     return language === "en" ? theEnglishWord : thePersianhWord;
   }, [language, theEnglishWord, thePersianhWord]);
 
-  const processGuess = useCallback(() => {
+  const hasWon = useCallback(() => {
     let currentScore = 0;
     grid[currentRow].forEach((element, index) => {
+      let colorIndex = 0;
       if (element.value === theWord[index]) {
-        setCellValue(currentRow, index, element.value, 3);
-        setLetterColor(element.value, 3);
+        colorIndex = 3;
         currentScore++;
-      } else if (theWord.includes(element.value)) {
-        setCellValue(currentRow, index, element.value, 2);
-        setLetterColor(element.value, 2);
-      } else {
-        setCellValue(currentRow, index, element.value, 1);
-        setLetterColor(element.value, 1);
-      }
+      } else if (theWord.includes(element.value)) colorIndex = 2;
+      else colorIndex = 1;
+
+      setCellValue(currentRow, index, element.value, colorIndex);
+      setLetterColor(element.value, colorIndex);
     });
 
     if (currentScore === 5) {
@@ -68,8 +79,19 @@ const useInputs = (): useInputsOutputs => {
     setNotification,
   ]);
 
-  const handleSubmit = useCallback(() => {
+  const resetNotifications = useCallback(() => {
     setNotification("error" as NotificationType, "");
+  }, [setNotification]);
+
+  const handleReset = useCallback(() => {
+    setLetters(language === "en" ? ENGLISH_LETTERS : PERSIAN_LETTERS);
+    resetNotifications();
+    setGameOver(false);
+    resetGame();
+  }, [language, resetGame, setLetters, resetNotifications, setGameOver]);
+
+  const handleSubmit = useCallback(() => {
+    resetNotifications();
 
     if (currentCol === 0) {
       setNotification(
@@ -87,11 +109,7 @@ const useInputs = (): useInputsOutputs => {
       return;
     }
 
-    const hasWon = processGuess();
-
-    if (hasWon) {
-      return;
-    }
+    if (hasWon()) return;
 
     if (currentRow === 4) {
       setGameOver(true);
@@ -101,20 +119,23 @@ const useInputs = (): useInputsOutputs => {
     }
   }, [
     t,
-    currentRow,
+    hasWon,
     currentCol,
+    currentRow,
     setGameOver,
-    processGuess,
     setCurrentCell,
     setNotification,
+    resetNotifications,
   ]);
 
   const handleDelete = useCallback(() => {
-    setNotification("error" as NotificationType, "");
+    resetNotifications();
+
     if (currentCol === 0) {
       setNotification("error" as NotificationType, t("message_delete"));
       return;
     }
+
     setCellValue(currentRow, currentCol - 1, "", 0);
     setCurrentCell(currentRow, currentCol - 1);
   }, [
@@ -124,11 +145,12 @@ const useInputs = (): useInputsOutputs => {
     setCellValue,
     setCurrentCell,
     setNotification,
+    resetNotifications,
   ]);
 
   const handleClick = useCallback(
     (input: string) => {
-      setNotification("error" as NotificationType, "");
+      resetNotifications();
 
       if (currentCol === 5) {
         setNotification("error" as NotificationType, t("message_guessed_all"));
@@ -137,7 +159,15 @@ const useInputs = (): useInputsOutputs => {
       setCellValue(currentRow, currentCol, input, 4);
       setCurrentCell(currentRow, currentCol + 1);
     },
-    [currentCol, currentRow, setCellValue, setCurrentCell, setNotification, t]
+    [
+      t,
+      currentCol,
+      currentRow,
+      setCellValue,
+      setCurrentCell,
+      setNotification,
+      resetNotifications,
+    ]
   );
 
   const handleKeyPress = useCallback(
@@ -155,7 +185,6 @@ const useInputs = (): useInputsOutputs => {
         } else {
           inputString = key.toUpperCase();
         }
-        console.log(inputString);
         handleClick(inputString);
       } else if (key === "Enter") {
         event.preventDefault();
@@ -189,6 +218,7 @@ const useInputs = (): useInputsOutputs => {
     theWord,
     gameOver,
     handleClick,
+    handleReset,
     handleDelete,
     handleSubmit,
   };

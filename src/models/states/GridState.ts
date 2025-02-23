@@ -1,5 +1,4 @@
-import { Cell } from "./Cell";
-import { NotificationType } from "./NotificationType";
+import { Cell } from "~/models";
 
 export interface GridState {
   // State
@@ -7,12 +6,7 @@ export interface GridState {
     row: number;
     col: number;
   };
-  notification: {
-    type: NotificationType;
-    message: string;
-  };
   grid: Cell[][];
-  letters: Cell[];
   gameOver: boolean;
   theEnglishWord: string;
   thePersianhWord: string;
@@ -24,9 +18,6 @@ export interface GridState {
     color: number
   ) => void;
   resetGame: () => void;
-  setLetters: (values: string[]) => void;
   setGameOver: (gameOver: boolean) => void;
   setCurrentCell: (row: number, col: number) => void;
-  setLetterColor: (value: string, color: number) => void;
-  setNotification: (type: NotificationType, message: string) => void;
 }
